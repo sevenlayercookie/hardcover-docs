@@ -1,0 +1,82 @@
+openapi: 3.1.0
+info:
+  title: Hardcover GraphQL API
+  version: 1.0.0
+  description: |
+    OpenAPI wrapper for the Hardcover GraphQL endpoint.
+    The API is GraphQL-based and available through a single HTTP endpoint.
+servers:
+  - url: https://api.hardcover.app
+security:
+  - bearerAuth: []
+paths:
+  /v1/graphql:
+    post:
+      summary: Execute a GraphQL operation
+      description: Send GraphQL queries and mutations to the Hardcover API.
+      operationId: executeGraphQL
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - query
+              properties:
+                query:
+                  type: string
+                  description: GraphQL query or mutation string.
+                variables:
+                  type: object
+                  description: Variables for the GraphQL operation.
+                  additionalProperties: true
+                operationName:
+                  type: string
+                  description: Name of the GraphQL operation when the request includes multiple operations.
+            examples:
+              meQuery:
+                summary: Get the authenticated user
+                value:
+                  query: |
+                    query {
+                      me {
+                        id
+                        username
+                      }
+                    }
+      responses:
+        '200':
+          description: GraphQL response payload
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    additionalProperties: true
+                  errors:
+                    type: array
+                    items:
+                      type: object
+                      additionalProperties: true
+        '401':
+          description: Expired or invalid token
+        '403':
+          description: Access denied for requested resource/query
+        '404':
+          description: Not found
+        '429':
+          description: Too many requests
+        '500':
+          description: Internal server error
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: API Token

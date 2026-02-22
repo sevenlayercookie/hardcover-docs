@@ -1,0 +1,56 @@
+{
+  "info": {
+    "name": "Hardcover GraphQL API",
+    "description": "Postman collection for the Hardcover GraphQL API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Get current user (me)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "authorization",
+            "value": "{{authorizationToken}}",
+            "type": "text"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "graphql",
+          "graphql": {
+            "query": "query {\n  me {\n    id\n    username\n  }\n}",
+            "variables": "{}"
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/v1/graphql",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "v1",
+            "graphql"
+          ]
+        },
+        "description": "Simple query to validate your API token and GraphQL access."
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.hardcover.app"
+    },
+    {
+      "key": "authorizationToken",
+      "value": ""
+    }
+  ]
+}
